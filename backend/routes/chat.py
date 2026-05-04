@@ -123,7 +123,8 @@ async def chat(request: ChatRequest, db: Session = Depends(get_db)):
                             db.delete(img)
                         db.commit()
 
-                    yield f"data: {json.dumps({'type': 'image', 'content': f'Here is what I created for you! ✨\\n*(Prompt: {image_prompt})*', 'image_url': image_url})}\n\n"
+                    content_msg = f"Here is what I created for you! ✨\n*(Prompt: {image_prompt})*"
+                    yield f"data: {json.dumps({'type': 'image', 'content': content_msg, 'image_url': image_url})}\n\n"
                 except Exception as e:
                     print(f"Tool execution error: {e}")
                     yield f"data: {json.dumps({'type': 'error', 'content': 'Failed to synthesize image.'})}\n\n"
