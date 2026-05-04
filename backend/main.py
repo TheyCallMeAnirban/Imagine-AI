@@ -4,6 +4,8 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 import os
+import asyncio
+import httpx
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -19,7 +21,27 @@ async def lifespan(app: FastAPI):
         print("[OK] Groq API key found")
     else:
         print("[WARN] GROQ_API_KEY not set - chat and intent detection will fail")
+        
+    # Start the keep-alive task
+    async def keep_alive():
+        url = os.getenv("RENDER_EXTERNAL_URL", "http://localhost:8000")
+        ping_url = f"{url.rstrip('/')}/api/health"
+        print(f"[KEEP-ALIVE] Starting pinger for {ping_url} every 14 minutes.")
+        
+        while True:
+            await asyncio.sleep(14 * 60)  # Ping every 14 minutes
+            try:
+                async with httpx.AsyncClient() as client:
+                    await client.get(ping_url)
+                    print(f"[KEEP-ALIVE] Successfully pinged {ping_url}")
+            except Exception as e:
+                print(f"[KEEP-ALIVE] Ping failed: {e}")
+
+    pinger_task = asyncio.create_task(keep_alive())
+    
     yield
+    
+    pinger_task.cancel()
     print("[STOP] ImagineAI backend shutting down...")
 
 app = FastAPI(
@@ -42,6 +64,11 @@ app.add_middleware(
 )
 
 app.include_router(chat_router, prefix="/api")
+
+@app.get("/api/health")
+def health_check():
+    """Endpoint to keep the Render free tier awake."""
+    return {"status": "alive", "service": "ImagineAI"}
 
 dist_path = os.path.join(os.path.dirname(__file__), "..", "dist")
 
