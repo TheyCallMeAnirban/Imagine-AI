@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&family=Inter:wght@100..900&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --font-mono: "Space Grotesk", monospace;
+  
+  --animate-typing: typing 1s infinite step-end;
+}
+
+@keyframes typing {
+  from, to { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+@layer base {
+  :root {
+    --color-surface: #f9f9f9;
+    --color-on-surface: #1a1c1c;
+    --color-outline: #000000;
+  }
+
+  body {
+    background-color: var(--color-surface);
+    color: var(--color-on-surface);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+}
+
+@layer utilities {
+  .dot-grid {
+    background-image: radial-gradient(circle, #000 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+  
+  .grainy {
+    position: relative;
+  }
+  
+  .grainy::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.05;
+    pointer-events: none;
+    background-image: url(https://lh3.googleusercontent.com/aida-public/AB6AXuDSA0N2F56UrGrJ-RO8q3gXHFsluffG1w8kMPdiprWBGuyQqbol5gPsip51L6OvV1rTepl6hhD8LC3pDmIfRVTzZOAHxog2rb6mEeJ61hDdptEIlLfIWh9yzLupRR63crL72XILIkS0y5YTpDZsEND2jgRc6BYhlHetEOCjM3fzvzmu_Ju75MHAMa7cBHjM-1MO95s1Y0iGtXM1mD0jJGZAzxFv_uPGvpQPymu7dENnxf3ig9VaTQMR27kAV01Fow9AjbRm4qmxLo6c);
+    z-index: 10;
+  }
+
+  .hard-shadow {
+    box-shadow: 4px 4px 0 0 #000;
+  }
+
+  
+  * {
+    border-radius: 0 !important;
+  }
+
+  
+  html.dark {
+    --color-surface: #0a0a0a;
+    --color-on-surface: #ffffff;
+  }
+
+  html.dark .dot-grid {
+    background-image: radial-gradient(circle, #333 1px, transparent 1px);
+  }
+
+  html.dark .grainy::before {
+    filter: invert(1);
+    opacity: 0.08;
+  }
+
+  
+  html.dark .bg-white { background-color: #050505 !important; }
+  html.dark .bg-black { background-color: #222 !important; color: #fff !important; }
+  html.dark .bg-gray-100 { background-color: #111 !important; }
+  html.dark .text-black { color: #f5f5f5 !important; }
+  html.dark .text-white { color: #ffffff !important; }
+  html.dark .border-black { border-color: #333 !important; }
+  html.dark .border-white { border-color: #050505 !important; }
+
+  
+  html.dark .hard-shadow { box-shadow: 4px 4px 0 0 #333 !important; }
+
+  
+  html.dark .hover\:bg-black:hover { background-color: #444 !important; color: #fff !important; }
+  html.dark .hover\:text-white:hover { color: #fff !important; }
+  html.dark .hover\:bg-white:hover { background-color: #111 !important; }
+  html.dark .hover\:text-black:hover { color: #fff !important; }
+
+  
+  html.dark .hover\:bg-black\/5:hover { background-color: rgba(255,255,255,0.05) !important; }
+  html.dark .bg-black\/60 { background-color: rgba(255,255,255,0.6) !important; }
+  html.dark .bg-black\/30 { background-color: rgba(255,255,255,0.3) !important; }
+  html.dark .bg-black\/80 { background-color: rgba(0,0,0,0.85) !important; }
+
+  
+  html.dark .prose {
+    --tw-prose-body: #f5f5f5;
+    --tw-prose-headings: #ffffff;
+    --tw-prose-links: #60a5fa;
+    --tw-prose-bold: #ffffff;
+    --tw-prose-counters: #f5f5f5;
+    --tw-prose-bullets: #f5f5f5;
+    --tw-prose-quotes: #f5f5f5;
+    --tw-prose-code: #ffffff;
+    --tw-prose-hr: #333333;
+    --tw-prose-th-borders: #333333;
+    --tw-prose-td-borders: #333333;
+    color: #f5f5f5 !important;
+  }
+  html.dark .prose p, html.dark .prose span, html.dark .prose strong, html.dark .prose li {
+    color: #f5f5f5 !important;
+  }
+  html.dark .prose-code\:bg-gray-100 code { background-color: #111 !important; color: #fff !important; }
+  html.dark .prose-pre\:bg-gray-100 pre { background-color: #111 !important; }
+  html.dark .prose-pre\:border-black pre { border-color: #333 !important; }
+}
