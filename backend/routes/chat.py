@@ -131,7 +131,7 @@ async def chat(request: ChatRequest, db: Session = Depends(get_db)):
 
         except Exception as e:
             print(f"Streaming error: {e}")
-            yield f"data: {json.dumps({'type': 'error', 'content': 'Neural link severed. Please try again.'})}\n\n"
+            yield f"data: {json.dumps({'type': 'error', 'content': f'Neural link severed: {str(e)}'})}\n\n"
 
     return StreamingResponse(
         event_generator(), 
