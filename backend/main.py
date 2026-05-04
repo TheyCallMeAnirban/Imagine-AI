@@ -74,11 +74,13 @@ dist_path = os.path.join(os.path.dirname(__file__), "..", "dist")
 
 if os.path.isdir(dist_path):
 
-    app.mount(
-        "/assets",
-        StaticFiles(directory=os.path.join(dist_path, "assets")),
-        name="static-assets",
-    )
+    assets_path = os.path.join(dist_path, "assets")
+    if os.path.isdir(assets_path):
+        app.mount(
+            "/assets",
+            StaticFiles(directory=assets_path),
+            name="static-assets",
+        )
 
     @app.get("/{full_path:path}")
     async def serve_spa(full_path: str):
