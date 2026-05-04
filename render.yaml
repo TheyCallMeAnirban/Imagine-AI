@@ -1,6 +1,7 @@
 services:
   - type: web
     name: imaginai
+    plan: free
     runtime: python
     buildCommand: "chmod +x render-build.sh && ./render-build.sh"
     startCommand: "cd backend && uvicorn main:app --host 0.0.0.0 --port $PORT"
